@@ -14,6 +14,9 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "QC Finder",
   description: "Explore the largest collection of QC images from agent sites — powered by real shoppers.",
+  icons: {
+    icon: "/assets/fav-icon.jpg",
+  },
 };
 
 export default function RootLayout({ children }) {

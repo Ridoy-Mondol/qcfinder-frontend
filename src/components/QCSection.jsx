@@ -1,9 +1,30 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function QCSection({ productData }) {
   const [selectedImage, setSelectedImage] = useState(null);
+
+  const imageWrapperRef = useRef(null);
+
+  useEffect(() => {
+    function handleOutsideClick(e) {
+      if (
+        imageWrapperRef.current &&
+        !imageWrapperRef.current.contains(e.target)
+      ) {
+        setSelectedImage(null);
+      }
+    }
+
+    if (selectedImage) {
+      document.addEventListener("mousedown", handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [selectedImage]);
 
   const qcPhotos =
     (productData?.qcImages || []).filter(
@@ -57,27 +78,27 @@ export default function QCSection({ productData }) {
               ))
             : null}
         </div>
+
         {selectedImage && (
-          <div
-            className="fixed inset-0 bg-[rgba(0,0,0,0.4)] flex items-center justify-center z-50 overflow-hidden"
-            onClick={() => setSelectedImage(null)}
-          >
-            <Image
-              src={selectedImage}
-              alt="Enlarged QC Photo"
-              width={1200}
-              height={1800}
-              sizes="70vw"
-              className="max-h-[90vh] h-[90vh] object-contain z-60 transition-opacity duration-300 ease-in-out"
-              style={{
-                animation: selectedImage
-                  ? "fadeIn 0.3s ease-in-out"
-                  : "fadeOut 0.3s ease-in-out forwards",
-              }}
-              onClick={(e) => e.stopPropagation()}
-            />
+          <div className="fixed inset-0 bg-[rgba(0,0,0,0.4)] flex items-center justify-center z-50 overflow-hidden">
+            <div ref={imageWrapperRef} className="max-h-[100vh]">
+              <Image
+                src={selectedImage}
+                alt="Enlarged QC Photo"
+                width={1200}
+                height={1800}
+                sizes="70vw"
+                className="max-h-[100vh] w-auto object-contain z-60 transition-opacity duration-300 ease-in-out"
+                style={{
+                  animation: selectedImage
+                    ? "fadeIn 0.3s ease-in-out"
+                    : "fadeOut 0.3s ease-in-out forwards",
+                }}
+              />
+            </div>
           </div>
         )}
+
         <style>
           {`
           @keyframes fadeIn {

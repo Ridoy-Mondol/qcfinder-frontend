@@ -9,7 +9,6 @@ export default function SearchBar() {
 
   const router = useRouter();
 
-  // Typing effect for title
   useEffect(() => {
     let index = 0;
     const interval = setInterval(() => {
@@ -53,11 +52,10 @@ export default function SearchBar() {
 
       {/* Title + Subtitle */}
       <h1 className="relative text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight tracking-tight">
-        {typedText}
-        <br className="hidden sm:block" />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
+        <div>{typedText}</div>
+        <div className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
           QC Smarter. Shop Better.
-        </span>
+        </div>
       </h1>
       <p className="relative mt-4 text-gray-600 max-w-xl mx-auto text-base sm:text-lg md:text-xl font-medium">
         Explore the largest collection of QC images from agent sites — powered
@@ -94,7 +92,7 @@ export default function SearchBar() {
         </div>
         <button
           type="submit"
-          className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold text-base sm:text-lg shadow-md hover:shadow-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:-translate-y-0.5"
+          className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold text-base sm:text-lg shadow-md hover:shadow-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
         >
           <span className="flex items-center gap-2">
             <svg

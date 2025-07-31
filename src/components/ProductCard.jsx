@@ -11,7 +11,6 @@ export default function ProductSection() {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-600px" });
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -20,7 +19,7 @@ export default function ProductSection() {
     setLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:4000/api/products?page=${pageNumber}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/products?page=${pageNumber}`
       );
       const data = await res.json();
       if (data.success) {
@@ -39,8 +38,6 @@ export default function ProductSection() {
     fetchProducts(page);
   }, [page]);
 
-  console.log("p", products);
-
   // 🔁 Infinite scroll
   useEffect(() => {
     const onScroll = () => {
@@ -58,7 +55,6 @@ export default function ProductSection() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [hasMore, loading]);
 
-  // Set hasAnimated when section is in view
   useEffect(() => {
     if (isInView) {
       setHasAnimated(true);
@@ -139,6 +135,13 @@ export default function ProductSection() {
                   fill
                   sizes="100vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  onClick={() =>
+                    router.push(
+                      product.seller === "Weidian"
+                        ? `/details/WD/${product.productId}`
+                        : `/details/TB/${product.productId}`
+                    )
+                  }
                 />
               </div>
 
@@ -190,6 +193,13 @@ export default function ProductSection() {
               </div>
             </motion.div>
           ))}
+
+          {/* Loader for pagination */}
+          {loading && (
+            <div className="fixed bottom-6 left-1/2 -translate-x-1/2">
+              <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          )}
         </div>
       </div>
     </section>
